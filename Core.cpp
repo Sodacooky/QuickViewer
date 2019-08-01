@@ -9,7 +9,6 @@ Core::Core()
 		m_nPicHeight = 0;
 		m_rtShow = { 0,0,0,0 };
 		m_pTexNow = nullptr;
-		m_pThr = nullptr;
 		m_nZoomInLevel = 0;
 		m_ptPrevMousePos = { 0,0 };
 
@@ -40,6 +39,14 @@ Core::Core()
 	SDL_PollEvent(&m_msg);
 }
 
+Core::~Core()
+{
+	SDL_DestroyTexture(m_pTexNow);
+	SDL_DestroyRenderer(m_pRen);
+	SDL_DestroyWindow(m_pWin);
+	SDL_Quit();
+}
+
 int Core::Run(const char* filename)
 {
 	SDL_Surface* pSurPic = nullptr;
@@ -60,6 +67,14 @@ int Core::Run(const char* filename)
 	SDL_FreeSurface(pSurPic);
 
 	__ResizeShowRect();
+
+	if (m_bFailed)
+	{
+		SDL_RenderClear(m_pRen);
+		SDL_RenderCopy(m_pRen, m_pTexNow, nullptr, &m_rtShow);
+		SDL_RenderPresent(m_pRen);
+		SDL_Delay(2000);
+	}
 
 	while (!m_bFailed)
 	{

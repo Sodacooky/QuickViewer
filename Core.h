@@ -11,10 +11,10 @@ class Core
 public:
 	//初始化SDL，创建窗口
 	Core();
+	~Core();
 	//开始读取图片进入显示
 	int Run(const char* filename);
 private:
-	static unsigned int sm_unInstanceCount;
 	SDL_Window* m_pWin;
 	SDL_Renderer* m_pRen;
 	int m_nWinWidth, m_nWinHeight;
@@ -27,7 +27,6 @@ private:
 	//成功打开文件后是是否软件停止的标志
 	bool m_bFailed;
 	SDL_Event m_msg;
-	SDL_Thread* m_pThr;
 	SDL_Point m_ptPrevMousePos;
 
 	int m_nZoomInLevel;
